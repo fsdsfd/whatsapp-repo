@@ -3,8 +3,7 @@ const app = express();
 app.use(express.json());
 
 const TOKEN = "TU_TOKEN_DE_ACCESO"; 
-const VERIFY_TOKEN = "midtoken123";  // el que vos quieras
-
+const VERIFY_TOKEN = process.env.token  
 // Verificación del webhook
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
