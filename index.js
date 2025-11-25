@@ -1,9 +1,33 @@
 import express from "express";
 const app = express();
 app.use(express.json());
+import fetch from "node-fetch";
 
-const TOKEN = "TU_TOKEN_DE_ACCESO"; 
-const VERIFY_TOKEN = process.env.token  
+async function enviarMensaje(numero, texto) {
+  await fetch(
+    `https://graph.facebook.com/v19.0/${process.env.WA_PHONE_ID}/messages`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.WA_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messaging_product: "whatsapp",
+        to: numero,
+        text: { body: texto },
+      }),
+    }
+  );
+}
+if (message) {
+  const from = message.from;
+  const text = message.text?.body;
+
+  enviarMensaje(from, "¡Hola! Este es un mensaje automático 😎");
+}
+const TOKEN = "TU_TOKEN_DE_ACCESO";
+const VERIFY_TOKEN = process.env.token;
 // Verificación del webhook
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
@@ -25,7 +49,7 @@ app.post("/webhook", (req, res) => {
   const message = entry?.changes?.[0]?.value?.messages?.[0];
 
   if (message) {
-    const from = message.from;  // número del usuario
+    const from = message.from; // número del usuario
     const text = message.text?.body;
 
     console.log(`Mensaje recibido de ${from}: ${text}`);
