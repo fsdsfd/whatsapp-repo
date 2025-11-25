@@ -20,12 +20,7 @@ async function enviarMensaje(numero, texto) {
     }
   );
 }
-if (message) {
-  const from = message.from;
-  const text = message.text?.body;
 
-  enviarMensaje(from, "¡Hola! Este es un mensaje automático 😎");
-}
 const TOKEN = "TU_TOKEN_DE_ACCESO";
 const VERIFY_TOKEN = process.env.token;
 // Verificación del webhook
@@ -49,10 +44,10 @@ app.post("/webhook", (req, res) => {
   const message = entry?.changes?.[0]?.value?.messages?.[0];
 
   if (message) {
-    const from = message.from; // número del usuario
+    const from = message.from;
     const text = message.text?.body;
 
-    console.log(`Mensaje recibido de ${from}: ${text}`);
+    enviarMensaje(from, "¡Hola! Este es un mensaje automático 😎");
   }
 
   res.sendStatus(200);
