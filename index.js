@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 
 
-const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+const VERIFY_TOKEN = process.env.token;
 
 async function enviarMensaje(numero, texto) {
   const respuesta = await fetch(
@@ -50,7 +50,11 @@ app.post("/webhook", async (req, res) => {
     const from = message.from;
     const text = message.text?.body;
 
-    await enviarMensaje(from, "¡Hola! Este es un mensaje automático 😎");
+    try {
+  await enviarMensaje(from, "...mensaje...");
+} catch (e) {
+  console.error("ERROR AL ENVIAR MENSAJE:", e);
+}
   }
 
   res.sendStatus(200);
